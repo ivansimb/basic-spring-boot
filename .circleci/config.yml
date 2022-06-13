@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs: 
+  email: cinotify/email@1.2.
 jobs:
   build:
     docker:
@@ -21,3 +23,14 @@ jobs:
           path: ~/project/target/testms-0.1.jar
       - store_artifacts:
           path: ~/project/target/testms-0.1.jar
+          
+workflows:
+  example-workflow:
+    jobs:
+      - build:
+          requires:
+            - email/send
+      - email/send:
+          body: 'Configure this notification at https://www.cinotify.cc/'
+          subject: CircleCI job started
+          to: ivan.simbolon@gmail.com
